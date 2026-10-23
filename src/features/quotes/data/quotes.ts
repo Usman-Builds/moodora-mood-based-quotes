@@ -1,51 +1,115 @@
 import type { Quote } from '../types/quote';
 
 export const quotes: readonly Quote[] = [
-  // Happy
+  // Happy (12)
   { id: 'h1', moodId: 'happy', text: 'Happiness is not something ready made. It comes from your own actions.', author: 'Dalai Lama' },
   { id: 'h2', moodId: 'happy', text: 'The most wasted of all days is one without laughter.', author: 'E.E. Cummings' },
   { id: 'h3', moodId: 'happy', text: 'Count your age by friends, not years. Count your life by smiles, not tears.', author: 'John Lennon' },
   { id: 'h4', moodId: 'happy', text: 'Let your joy be a source of strength.', author: 'Unknown' },
+  { id: 'h5', moodId: 'happy', text: 'Happiness depends upon ourselves.', author: 'Aristotle' },
+  { id: 'h6', moodId: 'happy', text: 'For every minute you are angry you lose sixty seconds of happiness.', author: 'Ralph Waldo Emerson' },
+  { id: 'h7', moodId: 'happy', text: 'A day without laughter is a day wasted.', author: 'Charlie Chaplin' },
+  { id: 'h8', moodId: 'happy', text: 'Happiness is when what you think, what you say, and what you do are in harmony.', author: 'Mahatma Gandhi' },
+  { id: 'h9', moodId: 'happy', text: 'Be happy for this moment. This moment is your life.', author: 'Omar Khayyam' },
+  { id: 'h10', moodId: 'happy', text: 'The secret of being happy is accepting where you are in life and making the most out of every day.', author: 'Unknown' },
+  { id: 'h11', moodId: 'happy', text: 'Joy is the simplest form of gratitude.', author: 'Karl Barth' },
+  { id: 'h12', moodId: 'happy', text: 'Success is not the key to happiness. Happiness is the key to success.', author: 'Albert Schweitzer' },
 
-  // Calm
+  // Calm (12)
   { id: 'c1', moodId: 'calm', text: 'Peace comes from within. Do not seek it without.', author: 'Buddha' },
   { id: 'c2', moodId: 'calm', text: 'Breathe. Let go. And remind yourself that this very moment is all you have.', author: 'Unknown' },
   { id: 'c3', moodId: 'calm', text: 'Quiet the mind and the soul will speak.', author: 'Ma Jaya Sati Bhagavati' },
   { id: 'c4', moodId: 'calm', text: 'Calmness is the cradle of power.', author: 'Josiah Gilbert Holland' },
+  { id: 'c5', moodId: 'calm', text: 'Nature does not hurry, yet everything is accomplished.', author: 'Lao Tzu' },
+  { id: 'c6', moodId: 'calm', text: 'Within you there is a stillness and a sanctuary to which you can retreat at any time.', author: 'Hermann Hesse' },
+  { id: 'c7', moodId: 'calm', text: 'Learn to be calm and you will always be happy.', author: 'Paramahansa Yogananda' },
+  { id: 'c8', moodId: 'calm', text: 'Silence is a source of great strength.', author: 'Lao Tzu' },
+  { id: 'c9', moodId: 'calm', text: 'The nearer a man comes to a calm mind, the closer he is to strength.', author: 'Marcus Aurelius' },
+  { id: 'c10', moodId: 'calm', text: 'Rest is not idleness, and to lie sometimes on the grass is not a waste of time.', author: 'John Lubbock' },
+  { id: 'c11', moodId: 'calm', text: 'Serenity comes when you trade expectations for acceptance.', author: 'Unknown' },
+  { id: 'c12', moodId: 'calm', text: 'You should sit in meditation for 20 minutes a day. Unless you are too busy, then sit for an hour.', author: 'Zen Proverb' },
 
-  // Hopeful
+  // Hopeful (12)
   { id: 'hp1', moodId: 'hopeful', text: 'Hope is being able to see that there is light despite all of the darkness.', author: 'Desmond Tutu' },
   { id: 'hp2', moodId: 'hopeful', text: 'The future belongs to those who believe in the beauty of their dreams.', author: 'Eleanor Roosevelt' },
   { id: 'hp3', moodId: 'hopeful', text: 'No winter lasts forever; no spring skips its turn.', author: 'Hal Borland' },
   { id: 'hp4', moodId: 'hopeful', text: 'Hope smiles from the threshold of the year to come.', author: 'Alfred Lord Tennyson' },
+  { id: 'hp5', moodId: 'hopeful', text: 'Once you choose hope, anything is possible.', author: 'Christopher Reeve' },
+  { id: 'hp6', moodId: 'hopeful', text: 'Hope is the thing with feathers that perches in the soul.', author: 'Emily Dickinson' },
+  { id: 'hp7', moodId: 'hopeful', text: 'We must accept finite disappointment, but never lose infinite hope.', author: 'Martin Luther King Jr.' },
+  { id: 'hp8', moodId: 'hopeful', text: 'Everything that is done in the world is done by hope.', author: 'Martin Luther' },
+  { id: 'hp9', moodId: 'hopeful', text: 'A little hope is a powerful thing.', author: 'Unknown' },
+  { id: 'hp10', moodId: 'hopeful', text: 'Difficult roads often lead to beautiful destinations.', author: 'Unknown' },
+  { id: 'hp11', moodId: 'hopeful', text: 'Keep your face to the sunshine and you cannot see a shadow.', author: 'Helen Keller' },
+  { id: 'hp12', moodId: 'hopeful', text: 'There is always light. If only we are brave enough to see it.', author: 'Amanda Gorman' },
 
-  // Grateful
+  // Grateful (12)
   { id: 'g1', moodId: 'grateful', text: 'Gratitude turns what we have into enough.', author: 'Aesop' },
   { id: 'g2', moodId: 'grateful', text: 'Acknowledging the good that you already have in your life is the foundation for all abundance.', author: 'Eckhart Tolle' },
   { id: 'g3', moodId: 'grateful', text: 'When I started counting my blessings, my whole life turned around.', author: 'Willie Nelson' },
   { id: 'g4', moodId: 'grateful', text: 'Gratitude is the fairest blossom which springs from the soul.', author: 'Henry Ward Beecher' },
+  { id: 'g5', moodId: 'grateful', text: 'Develop an attitude of gratitude, and give thanks for everything that happens to you.', author: 'Brian Tracy' },
+  { id: 'g6', moodId: 'grateful', text: 'Gratitude is not only the greatest of virtues, but the parent of all others.', author: 'Cicero' },
+  { id: 'g7', moodId: 'grateful', text: 'He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has.', author: 'Epictetus' },
+  { id: 'g8', moodId: 'grateful', text: 'Be thankful for what you have; you will end up having more.', author: 'Oprah Winfrey' },
+  { id: 'g9', moodId: 'grateful', text: 'Gratitude can transform common days into thanksgivings.', author: 'William Arthur Ward' },
+  { id: 'g10', moodId: 'grateful', text: 'Enjoy the little things, for one day you may look back and realize they were the big things.', author: 'Robert Brault' },
+  { id: 'g11', moodId: 'grateful', text: 'No one is as capable of gratitude as one who has emerged from the kingdom of night.', author: 'Elie Wiesel' },
+  { id: 'g12', moodId: 'grateful', text: 'Piglet noticed that even though he had a Very Small Heart, it could hold a rather large amount of Gratitude.', author: 'A.A. Milne' },
 
-  // Sad
+  // Sad (12)
   { id: 's1', moodId: 'sad', text: 'Tears come from the heart and not from the brain.', author: 'Leonardo da Vinci' },
   { id: 's2', moodId: 'sad', text: 'The word "happy" would lose its meaning if it were not balanced by sadness.', author: 'Carl Jung' },
   { id: 's3', moodId: 'sad', text: 'Even the darkest night will end and the sun will rise.', author: 'Victor Hugo' },
   { id: 's4', moodId: 'sad', text: 'You cannot protect yourself from sadness without protecting yourself from happiness.', author: 'Jonathan Safran Foer' },
+  { id: 's5', moodId: 'sad', text: 'Heavy hearts, like heavy clouds in the sky, are best relieved by the letting of a little water.', author: 'Christopher Morley' },
+  { id: 's6', moodId: 'sad', text: 'Every life has a measure of sorrow, and sometimes this is what awakens us.', author: 'Steven Tyler' },
+  { id: 's7', moodId: 'sad', text: 'The walls we build around us to keep sadness out also keeps out the joy.', author: 'Jim Rohn' },
+  { id: 's8', moodId: 'sad', text: 'Crying is how your heart speaks when your lips cannot explain the pain.', author: 'Unknown' },
+  { id: 's9', moodId: 'sad', text: 'There is no greater sorrow than to recall in misery the time when we were happy.', author: 'Dante Alighieri' },
+  { id: 's10', moodId: 'sad', text: 'Out of suffering have emerged the strongest souls.', author: 'Khalil Gibran' },
+  { id: 's11', moodId: 'sad', text: 'Stars can\'t shine without darkness.', author: 'Unknown' },
+  { id: 's12', moodId: 'sad', text: 'The deeper that sorrow carves into your being, the more joy you can contain.', author: 'Khalil Gibran' },
 
-  // Anxious
+  // Anxious (12)
   { id: 'a1', moodId: 'anxious', text: 'You can’t stop the waves, but you can learn to surf.', author: 'Jon Kabat-Zinn' },
   { id: 'a2', moodId: 'anxious', text: 'Do not anticipate trouble, or worry about what may never happen.', author: 'Benjamin Franklin' },
   { id: 'a3', moodId: 'anxious', text: 'Worry does not empty tomorrow of its sorrow, it empties today of its strength.', author: 'Corrie ten Boom' },
   { id: 'a4', moodId: 'anxious', text: 'Feel the fear and do it anyway.', author: 'Susan Jeffers' },
+  { id: 'a5', moodId: 'anxious', text: 'Nothing diminishes anxiety faster than action.', author: 'Walter Anderson' },
+  { id: 'a6', moodId: 'anxious', text: 'Present fears are less than horrible imaginings.', author: 'William Shakespeare' },
+  { id: 'a7', moodId: 'anxious', text: 'Anxiety is the dizziness of freedom.', author: 'Søren Kierkegaard' },
+  { id: 'a8', moodId: 'anxious', text: 'If you treat every situation as a life and death matter, you’ll die a lot of times.', author: 'Dean Smith' },
+  { id: 'a9', moodId: 'anxious', text: 'Breathe in peace, breathe out stress.', author: 'Unknown' },
+  { id: 'a10', moodId: 'anxious', text: 'Focus on the step in front of you, not the whole staircase.', author: 'Unknown' },
+  { id: 'a11', moodId: 'anxious', text: 'Worrying is like paying a debt you don’t owe.', author: 'Mark Twain' },
+  { id: 'a12', moodId: 'anxious', text: 'You don’t have to control your thoughts. You just have to stop letting them control you.', author: 'Dan Millman' },
 
-  // Angry
+  // Angry (12)
   { id: 'an1', moodId: 'angry', text: 'For every minute you remain angry, you give up sixty seconds of peace of mind.', author: 'Ralph Waldo Emerson' },
   { id: 'an2', moodId: 'angry', text: 'Holding onto anger is like drinking poison and expecting the other person to die.', author: 'Buddha' },
   { id: 'an3', moodId: 'angry', text: 'Speak when you are angry and you will make the best speech you will ever regret.', author: 'Ambrose Bierce' },
   { id: 'an4', moodId: 'angry', text: 'Anger is a wind which blows out the lamp of the mind.', author: 'Robert Greene' },
+  { id: 'an5', moodId: 'angry', text: 'How much more grievous are the consequences of anger than the causes of it.', author: 'Marcus Aurelius' },
+  { id: 'an6', moodId: 'angry', text: 'Anger is one letter short of danger.', author: 'Unknown' },
+  { id: 'an7', moodId: 'angry', text: 'The greatest remedy for anger is delay.', author: 'Seneca' },
+  { id: 'an8', moodId: 'angry', text: 'When angry, count to ten before you speak. If very angry, count to one hundred.', author: 'Thomas Jefferson' },
+  { id: 'an9', moodId: 'angry', text: 'Be slow to anger, for anger harbors in the bosom of fools.', author: 'Ecclesiastes' },
+  { id: 'an10', moodId: 'angry', text: 'He who angers you conquers you.', author: 'Elizabeth Kenny' },
+  { id: 'an11', moodId: 'angry', text: 'Whatever is begun in anger ends in shame.', author: 'Benjamin Franklin' },
+  { id: 'an12', moodId: 'angry', text: 'Let go of your anger, it may taste sweet but it kills you from inside.', author: 'Unknown' },
 
-  // Lonely
+  // Lonely (12)
   { id: 'l1', moodId: 'lonely', text: 'All great and precious things are lonely.', author: 'John Steinbeck' },
   { id: 'l2', moodId: 'lonely', text: 'Loneliness does not come from having no people around, but from being unable to communicate what seems important.', author: 'Carl Jung' },
   { id: 'l3', moodId: 'lonely', text: 'The soul that sees beauty may sometimes walk alone.', author: 'Johann Wolfgang von Goethe' },
   { id: 'l4', moodId: 'lonely', text: 'You are never alone. You are eternally connected with everyone.', author: 'Amma' },
+  { id: 'l5', moodId: 'lonely', text: 'We are born alone, we live alone, we die alone. Only through our love and friendship can we create the illusion for the moment that we are not alone.', author: 'Orson Welles' },
+  { id: 'l6', moodId: 'lonely', text: 'Sometimes you need to be alone to find out who you really are.', author: 'Unknown' },
+  { id: 'l7', moodId: 'lonely', text: 'Solitude is fine, but you need someone to tell you that solitude is fine.', author: 'Honoré de Balzac' },
+  { id: 'l8', moodId: 'lonely', text: 'The eternal quest of the human being is to shatter his loneliness.', author: 'Norman Cousins' },
+  { id: 'l9', moodId: 'lonely', text: 'Being alone is not the same as being lonely.', author: 'Marty Rubin' },
+  { id: 'l10', moodId: 'lonely', text: 'In order to be open to creativity, one must have the capacity for constructive use of solitude.', author: 'Rollo May' },
+  { id: 'l11', moodId: 'lonely', text: 'Language... has created the word "loneliness" to express the pain of being alone, and the word "solitude" to express the glory of being alone.', author: 'Paul Tillich' },
+  { id: 'l12', moodId: 'lonely', text: 'A season of loneliness and isolation is when the caterpillar gets its wings.', author: 'Mandy Hale' },
 ];
