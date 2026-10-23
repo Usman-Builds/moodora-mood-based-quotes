@@ -1,0 +1,68 @@
+import type { Mood } from '../types/mood';
+
+export const moods: readonly Mood[] = [
+  {
+    id: 'happy',
+    label: 'Happy',
+    description: 'Light and open',
+    accent: '#C9862D',
+    tint: '#F9E9CC',
+    monogram: 'HP',
+  },
+  {
+    id: 'calm',
+    label: 'Calm',
+    description: 'Settled and steady',
+    accent: '#4F857D',
+    tint: '#DFEFEA',
+    monogram: 'CL',
+  },
+  {
+    id: 'hopeful',
+    label: 'Hopeful',
+    description: 'Looking forward',
+    accent: '#557699',
+    tint: '#E3EBF4',
+    monogram: 'HF',
+  },
+  {
+    id: 'grateful',
+    label: 'Grateful',
+    description: 'Holding what matters',
+    accent: '#8A773A',
+    tint: '#F2ECD6',
+    monogram: 'GR',
+  },
+  {
+    id: 'sad',
+    label: 'Sad',
+    description: 'Heavy and tender',
+    accent: '#586D9C',
+    tint: '#E4E9F5',
+    monogram: 'SD',
+  },
+  {
+    id: 'anxious',
+    label: 'Anxious',
+    description: 'Restless and uncertain',
+    accent: '#81639F',
+    tint: '#ECE4F5',
+    monogram: 'AX',
+  },
+  {
+    id: 'angry',
+    label: 'Angry',
+    description: 'Hot and unresolved',
+    accent: '#AC574A',
+    tint: '#F6E0DC',
+    monogram: 'AN',
+  },
+  {
+    id: 'lonely',
+    label: 'Lonely',
+    description: 'Quiet and apart',
+    accent: '#686C88',
+    tint: '#E7E8F0',
+    monogram: 'LN',
+  },
+];
