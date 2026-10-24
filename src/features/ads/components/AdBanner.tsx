@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { AppText } from '../../../components/ui/AppText';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { useTheme } from '../../../theme/ThemeProvider';
 import { adsConfig, getBannerUnitId } from '../config/adsConfig';
 import type { AdPlacement } from '../types/ad';
@@ -17,6 +17,8 @@ export function AdBanner({ placement, style }: AdBannerProps) {
     return null;
   }
 
+  const unitId = __DEV__ ? TestIds.BANNER : getBannerUnitId();
+
   return (
     <View
       accessibilityLabel="Advertisement"
@@ -31,27 +33,24 @@ export function AdBanner({ placement, style }: AdBannerProps) {
       ]}
       testID={`ad-banner-${placement}`}
     >
-      {adsConfig.showPlaceholdersInDevelopment && __DEV__ ? (
-        <>
-          <AppText variant="caption" color={theme.colors.inkSubtle}>
-            Advertisement
-          </AppText>
-          <AppText variant="caption" color={theme.colors.inkSubtle}>
-            {getBannerUnitId()}
-          </AppText>
-        </>
-      ) : null}
+      <BannerAd
+        unitId={unitId}
+        size={BannerAdSize.BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: 50,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 12,
     overflow: 'hidden',
+    minHeight: 50,
   },
 });

@@ -7,7 +7,7 @@ export const env = {
   useRemoteQuotes: false,
   requestTimeoutMs: 10000,
   ads: {
-    enabled: false,
+    enabled: true,
     showPlaceholdersInDevelopment: false,
     androidBannerUnitId: 'ca-app-pub-3940256099942544/6300978111',
     iosBannerUnitId: 'ca-app-pub-3940256099942544/2934735716',
