@@ -14,6 +14,17 @@ type Nav = NativeStackNavigationProp<RootStackParamList, 'MoodSelection'>;
 const { width } = Dimensions.get('window');
 const cardWidth = (width - theme.spacing.lg * 2 - theme.spacing.md) / 2;
 
+const moodIcons: Record<string, string> = {
+  happy: '●',
+  calm: '◐',
+  hopeful: '▲',
+  grateful: '◆',
+  sad: '▼',
+  anxious: '⧖',
+  angry: '✶',
+  lonely: '○',
+};
+
 export function MoodSelectionScreen() {
   const navigation = useNavigation<Nav>();
 
@@ -34,14 +45,19 @@ export function MoodSelectionScreen() {
       <View style={[styles.accentBar, { backgroundColor: item.accent }]} />
       <View style={styles.cardContent}>
         <View style={styles.headerRow}>
-          <View style={[styles.monogram, { backgroundColor: item.tint }]}>
-            <AppText variant="label" color={item.accent}>
-              {item.monogram}
+          <View style={[styles.iconWrap, { backgroundColor: item.accent }]}>
+            <AppText variant="label" color={theme.colors.white}>
+              {moodIcons[item.id] || item.monogram}
             </AppText>
           </View>
-          <AppText variant="title" style={styles.cardTitle}>
-            {item.label}
-          </AppText>
+          <View style={styles.titleBlock}>
+            <AppText variant="title" style={styles.cardTitle}>
+              {item.label}
+            </AppText>
+            <AppText variant="label" color={item.accent} style={styles.tag}>
+              VIBE
+            </AppText>
+          </View>
         </View>
         <AppText variant="body" color={theme.colors.inkMuted} style={styles.desc}>
           {item.description}
@@ -52,16 +68,16 @@ export function MoodSelectionScreen() {
 
   return (
     <Screen testID="mood-selection-screen">
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <View style={styles.header}>
-        <AppText variant="label" color={theme.colors.inkSubtle}>
-          MOODORA
+        <AppText variant="label" color={theme.colors.inkSubtle} style={styles.eyebrow}>
+          NOESIS
         </AppText>
         <AppText variant="title" style={styles.headerTitle}>
-          How are you feeling today?
+          Choose your headspace
         </AppText>
         <AppText variant="body" color={theme.colors.inkMuted}>
-          Pick a mood to discover quotes curated for you.
+          Select a mood to tune into curated perspective.
         </AppText>
       </View>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -83,10 +99,13 @@ const styles = StyleSheet.create({
     paddingTop: theme.spacing.lg,
     paddingBottom: theme.spacing.md,
   },
+  eyebrow: {
+    letterSpacing: 6,
+  },
   headerTitle: {
     marginTop: theme.spacing.xs,
     marginBottom: theme.spacing.xs,
-    fontSize: 28,
+    fontSize: 30,
   },
   scrollContent: {
     paddingBottom: theme.spacing.xl,
@@ -102,17 +121,17 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
   },
   card: {
-    borderRadius: 16,
-    borderWidth: 1.5,
+    borderRadius: 18,
+    borderWidth: 1,
     overflow: 'hidden',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
-    height: 150,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.22,
+    shadowRadius: 28,
+    elevation: 8,
+    height: 158,
   },
   accentBar: {
-    height: 4,
+    height: 3,
     width: '100%',
   },
   cardContent: {
@@ -124,20 +143,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  monogram: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  iconWrap: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: theme.spacing.sm,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 6,
+  },
+  titleBlock: {
+    flex: 1,
   },
   cardTitle: {
-    flex: 1,
-    fontSize: 18,
+    fontSize: 19,
+  },
+  tag: {
+    marginTop: 2,
+    letterSpacing: 4,
+    fontSize: 10,
   },
   desc: {
     fontSize: 13,
-    lineHeight: 18,
+    lineHeight: 19,
   },
 });

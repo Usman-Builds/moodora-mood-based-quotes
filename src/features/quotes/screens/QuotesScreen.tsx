@@ -74,15 +74,14 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
   };
 
   const accent = mood?.accent || theme.colors.accent;
-  const tint = mood?.tint || theme.colors.background;
 
   return (
-    <Screen testID="quotes-screen">
-      <StatusBar barStyle="dark-content" />
-      <View style={[styles.background, { backgroundColor: tint }]}>
+    <Screen testID="quotes-screen" decorative={false}>
+      <StatusBar barStyle="light-content" />
+      <View style={[styles.background, { backgroundColor: theme.colors.background }]}>
         <View style={styles.header}>
           <Pressable onPress={() => navigation.goBack()} accessibilityRole="button" accessibilityLabel="Go back">
-            <AppText variant="label" color={theme.colors.inkSubtle}>
+            <AppText variant="label" color={theme.colors.inkMuted}>
               BACK
             </AppText>
           </Pressable>
@@ -95,8 +94,8 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
               {shuffled.length > 0 ? `${index + 1} / ${shuffled.length}` : '0'}
             </AppText>
           </View>
-          <AppText variant="body" color={theme.colors.inkMuted}>
-            {mood ? mood.description : 'Quotes for this mood'}
+          <AppText variant="label" color={accent} style={styles.moodTag}>
+            {mood ? mood.description.toUpperCase() : 'HEADSPACE'}
           </AppText>
         </View>
 
@@ -112,6 +111,7 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
                   shadowColor: accent,
                 },
               ]}>
+              <View style={[styles.quoteAccent, { backgroundColor: accent }]} />
               <AppText variant="title" style={styles.quoteMark}>
                 "
               </AppText>
@@ -119,7 +119,7 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
                 {current.text}
               </AppText>
               <AppText variant="body" color={theme.colors.inkMuted} style={styles.author}>
-                - {current.author}
+                {current.author}
               </AppText>
             </Animated.View>
           ) : (
@@ -132,16 +132,16 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
         </View>
 
         <View style={styles.actions}>
-          <Pressable
-            onPress={goNext}
-            style={[styles.nextButton, { backgroundColor: accent }]}
-            disabled={shuffled.length === 0}
-            accessibilityRole="button"
-            accessibilityLabel="Next quote">
-            <AppText variant="label" color={theme.colors.surface}>
-              NEXT QUOTE
-            </AppText>
-          </Pressable>
+        <Pressable
+          onPress={goNext}
+          style={[styles.nextButton, { backgroundColor: accent, shadowColor: accent }]}
+          disabled={shuffled.length === 0}
+          accessibilityRole="button"
+          accessibilityLabel="Next quote">
+          <AppText variant="label" color={theme.colors.white}>
+            NEXT IN THIS HEADSPACE
+          </AppText>
+        </Pressable>
         </View>
 
         <View style={styles.footer}>
@@ -176,6 +176,11 @@ const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
   },
+  moodTag: {
+    marginTop: theme.spacing.xs,
+    letterSpacing: 4,
+    fontSize: 10,
+  },
   cardContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -185,13 +190,21 @@ const styles = StyleSheet.create({
   quoteCard: {
     width: width - theme.spacing.lg * 2,
     backgroundColor: theme.colors.surface,
-    borderWidth: 2,
-    borderRadius: 20,
+    borderWidth: 1,
+    borderRadius: 22,
     padding: theme.spacing.xl,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.28,
+    shadowRadius: 36,
+    elevation: 12,
+    overflow: 'hidden',
+  },
+  quoteAccent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 4,
   },
   quoteMark: {
     fontSize: 48,
@@ -215,6 +228,10 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.md,
     paddingHorizontal: theme.spacing.xl,
     borderRadius: 999,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.32,
+    shadowRadius: 22,
+    elevation: 10,
   },
   footer: {
     paddingHorizontal: theme.spacing.lg,

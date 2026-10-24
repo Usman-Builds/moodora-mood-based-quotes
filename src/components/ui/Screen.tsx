@@ -46,8 +46,15 @@ export function Screen({
           <View
             style={[
               styles.orb,
-              styles.orbBottom,
+              styles.orbMid,
               { backgroundColor: theme.colors.primarySoft },
+            ]}
+          />
+          <View
+            style={[
+              styles.orb,
+              styles.orbBottom,
+              { backgroundColor: theme.colors.accent },
             ]}
           />
         </View>
@@ -67,17 +74,21 @@ const styles = StyleSheet.create({
   },
   orb: {
     position: 'absolute',
-    width: 260,
-    height: 260,
-    borderRadius: 130,
-    opacity: 0.55,
+    width: 320,
+    height: 320,
+    borderRadius: 160,
+    opacity: 0.28,
   },
   orbTop: {
-    top: -150,
-    right: -100,
+    top: -180,
+    right: -140,
+  },
+  orbMid: {
+    top: 120,
+    left: -200,
   },
   orbBottom: {
-    bottom: -180,
-    left: -130,
+    bottom: -220,
+    right: -160,
   },
 });

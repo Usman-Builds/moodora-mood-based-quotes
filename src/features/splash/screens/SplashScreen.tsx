@@ -12,7 +12,7 @@ import type { RootStackParamList } from '../../../app/navigation/types';
 import { AppText } from '../../../components/ui/AppText';
 import { theme } from '../../../theme/theme';
 
-const SPLASH_DURATION_MS = 1700;
+const SPLASH_DURATION_MS = 1900;
 
 type SplashScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -22,33 +22,52 @@ type SplashScreenProps = NativeStackScreenProps<
 export function SplashScreen({ navigation }: SplashScreenProps) {
   const insets = useSafeAreaInsets();
   const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(16)).current;
-  const scale = useRef(new Animated.Value(0.94)).current;
+  const translateY = useRef(new Animated.Value(18)).current;
+  const scale = useRef(new Animated.Value(0.9)).current;
+  const pulse = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     const entrance = Animated.parallel([
       Animated.timing(opacity, {
         toValue: 1,
-        duration: 700,
+        duration: 800,
         easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
       Animated.timing(translateY, {
         toValue: 0,
-        duration: 700,
+        duration: 800,
         easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
       Animated.spring(scale, {
         toValue: 1,
-        damping: 14,
-        stiffness: 90,
-        mass: 0.8,
+        damping: 12,
+        stiffness: 100,
+        mass: 0.9,
         useNativeDriver: true,
       }),
     ]);
 
+    const glow = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, {
+          toValue: 1.08,
+          duration: 1400,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulse, {
+          toValue: 1,
+          duration: 1400,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+
     entrance.start();
+    glow.start();
 
     const timeout = setTimeout(() => {
       navigation.replace('MoodSelection');
@@ -57,8 +76,9 @@ export function SplashScreen({ navigation }: SplashScreenProps) {
     return () => {
       clearTimeout(timeout);
       entrance.stop();
+      glow.stop();
     };
-  }, [navigation, opacity, scale, translateY]);
+  }, [navigation, opacity, pulse, scale, translateY]);
 
   return (
     <View style={styles.container}>
@@ -77,38 +97,49 @@ export function SplashScreen({ navigation }: SplashScreenProps) {
           },
         ]}
       >
-        <View style={styles.mark}>
-          <View style={styles.markDotAccent} />
-          <View style={styles.markDotLilac} />
-          <View style={styles.markLine} />
-        </View>
+        <Animated.View style={[styles.markRing, { transform: [{ scale: pulse }] }]}>
+          <View style={styles.mark}>
+            <View style={styles.markCore} />
+            <View style={styles.markArcTop} />
+            <View style={styles.markArcBottom} />
+          </View>
+        </Animated.View>
 
         <AppText
           variant="display"
           color={theme.colors.splashText}
           align="center"
+          style={styles.brand}
         >
-          Moodora
+          NOESIS
+        </AppText>
+        <AppText
+          variant="label"
+          color={theme.colors.splashLilac}
+          align="center"
+          style={styles.tagline}
+        >
+          HEADSPACE IN QUOTES
         </AppText>
         <AppText
           variant="body"
           color={theme.colors.splashMuted}
           align="center"
-          style={styles.tagline}
+          style={styles.subline}
         >
-          A quiet space for how you feel.
+          Find clarity in the way you feel.
         </AppText>
       </Animated.View>
 
       <Animated.View
-        style={[styles.footer, { opacity, bottom: insets.bottom + 32 }]}
+        style={[styles.footer, { opacity, bottom: insets.bottom + 28 }]}
       >
         <AppText
           variant="label"
           color={theme.colors.splashMuted}
           align="center"
         >
-          TAKE A BREATH
+          BREATH. REFLECT. RESET.
         </AppText>
       </Animated.View>
     </View>
@@ -125,78 +156,97 @@ const styles = StyleSheet.create({
   },
   orbOne: {
     position: 'absolute',
-    top: -120,
-    right: -90,
-    width: 280,
-    height: 280,
-    borderRadius: 140,
-    backgroundColor: '#352A50',
-    opacity: 0.8,
-  },
-  orbTwo: {
-    position: 'absolute',
-    bottom: -150,
-    left: -100,
+    top: -140,
+    right: -110,
     width: 320,
     height: 320,
     borderRadius: 160,
-    backgroundColor: '#2C2342',
+    backgroundColor: '#1F2647',
     opacity: 0.9,
+  },
+  orbTwo: {
+    position: 'absolute',
+    bottom: -170,
+    left: -120,
+    width: 360,
+    height: 360,
+    borderRadius: 180,
+    backgroundColor: '#1A203B',
+    opacity: 0.95,
   },
   orbThree: {
     position: 'absolute',
-    top: '42%',
-    right: -150,
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-    backgroundColor: '#3A2D58',
-    opacity: 0.55,
+    top: '38%',
+    right: -170,
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: '#262D52',
+    opacity: 0.6,
   },
   content: {
     alignItems: 'center',
     paddingHorizontal: theme.spacing.xl,
   },
-  mark: {
-    width: 86,
-    height: 86,
-    marginBottom: theme.spacing.lg,
+  markRing: {
+    width: 110,
+    height: 110,
+    marginBottom: theme.spacing.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 28,
+    borderRadius: 55,
+    borderWidth: 1,
+    borderColor: 'rgba(155, 123, 255, 0.4)',
+    backgroundColor: 'rgba(155, 123, 255, 0.12)',
+  },
+  mark: {
+    width: 78,
+    height: 78,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 39,
+    backgroundColor: theme.colors.splashSurface,
     borderWidth: 1,
     borderColor: theme.colors.splashBorder,
-    backgroundColor: theme.colors.splashSurface,
   },
-  markDotAccent: {
-    position: 'absolute',
-    left: 23,
-    top: 29,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: theme.colors.accent,
-  },
-  markDotLilac: {
-    position: 'absolute',
-    right: 23,
-    top: 29,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+  markCore: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
     backgroundColor: theme.colors.splashLilac,
+  },
+  markArcTop: {
+    position: 'absolute',
+    top: 16,
+    width: 36,
+    height: 18,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+    borderWidth: 3,
+    borderBottomWidth: 0,
+    borderColor: theme.colors.accent,
     opacity: 0.9,
   },
-  markLine: {
+  markArcBottom: {
     position: 'absolute',
-    bottom: 21,
-    width: 24,
-    height: 2,
-    borderRadius: 1,
-    backgroundColor: theme.colors.splashMuted,
+    bottom: 16,
+    width: 36,
+    height: 18,
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
+    borderWidth: 3,
+    borderTopWidth: 0,
+    borderColor: theme.colors.aurora,
     opacity: 0.8,
   },
+  brand: {
+    letterSpacing: 10,
+  },
   tagline: {
+    marginTop: theme.spacing.md,
+    letterSpacing: 6,
+  },
+  subline: {
     marginTop: theme.spacing.sm,
   },
   footer: {
