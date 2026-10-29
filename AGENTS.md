@@ -1,5 +1,15 @@
 # AGENTS.md
 
+## Session history (read this first)
+- Read [`history/HISTORY.md`](history/HISTORY.md) at the start of every session before making changes.
+- Update it at the end of every session: append a dated entry under "Session log" and refresh the
+  status/known-issues/next-steps sections so the next session can continue from it.
+- Follow its maintenance rules: keep entries short, never write secrets (paths only), do not duplicate
+  `docs/` content, commit the update with the work, and rotate old entries into `history/archive/`
+  per the policy in that file.
+- Treat it as the source of truth for current state (feature status, signing, test APK, open issues);
+  verify important claims against the code and `git log`.
+
 ## Quick facts
 - Name: `moodora` (RN CLI), package `com.moodora.app`, display `Moodora`. New Architecture/Hermes enabled.
 - Stack: React Native `0.88.0`, React `19.3.0`, TS `^6.0.3`, RN CLI `20.2.0`. Nav: `@react-navigation/native` `7.5.1` + `native-stack` `7.21.0`. `react-native-screens` `4.30.0`, `react-native-safe-area-context` `5.10.1`.
@@ -37,5 +47,6 @@
 
 ## References
 - Root keeps only `README.md` and `AGENTS.md`; all other docs live in `docs/`.
+- `history/HISTORY.md` — session handoff log; keep it updated.
 - `docs/{COMMANDS,HOW_TO_START_APP,ARCHITECTURE,FEATURES,SETUP,ADS_INTEGRATION,ADS_GO_LIVE,BUILD_SIGNED_APK}.md`
 - `opencode.json` / repo scripts for bundling/steps
