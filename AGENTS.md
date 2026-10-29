@@ -15,6 +15,7 @@
 - Test: `npm test` (Jest RN preset). Run single test: `npx jest path/to/file.test.ts --runInBand`
 - Dev: `npm start` or `npm run start:reset`; Android `npm run android`; iOS `bundle install && bundle exec pod install && npm run ios`
 - Bundle check: `npm run bundle:android` / `npm run bundle:ios` (scripts/bundle.js)
+- Clean build artifacts: `npm run clean`; full reset incl. `node_modules`: `npm run clean:all` (then `npm ci`)
 
 ## Architecture notes
 - Entry: `index.js` -> `App.tsx` -> `src/app/App.tsx` wraps with `SafeAreaProvider`/theme providers; nav in `src/app/navigation/AppNavigator.tsx` (stack: `Splash` -> `MoodSelection` -> `Quotes` with `moodId`).

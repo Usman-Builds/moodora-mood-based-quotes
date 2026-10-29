@@ -18,7 +18,9 @@
     "step:2": "npm run android",
     "step:2:ios": "npm run ios",
     "bundle:android": "node scripts/bundle.js android",
-    "bundle:ios": "node scripts/bundle.js ios"
+    "bundle:ios": "node scripts/bundle.js ios",
+    "clean": "node scripts/clean.js",
+    "clean:all": "node scripts/clean.js --all"
   },
   "dependencies": {
     "@react-navigation/native": "7.5.1",
