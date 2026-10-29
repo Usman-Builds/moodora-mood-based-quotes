@@ -25,6 +25,9 @@
 
 ## Gotchas / quirks
 - Windows env: no JDK/ANDROID_HOME/SDK/adb/emulator/iOS toolchain guaranteed; native builds/smoke tests may not run here.
+- AdMob: SDK `react-native-google-mobile-ads` 17.x. Android **requires** `com.google.android.gms.ads.APPLICATION_ID` meta-data in `android/app/src/main/AndroidManifest.xml` or the app crashes at launch (`Unable to get provider MobileAdsInitProvider`). The library declares an empty value, so the app entry needs `xmlns:tools` + `tools:replace="android:value"`.
+- Ads: `src/config/env.ts` uses Google test unit IDs; `AdBanner` forces `TestIds.BANNER` when `__DEV__`, so dev always shows "Test Ad".
+- First Metro bundle after `start:reset` can take ~90s; a white screen during that time is not a crash.
 - TS: large quote arrays caused `TS2590` before; keep quotes in JSON (`quotes_bulk.json`) not massive inline literals.
 - Jest: `jest.config.js` has `transformIgnorePatterns` for RN/Nav; tests use `@react-native/jest-preset`.
 - StatusBar: use `barStyle` only (no backgroundColor mixing issues in places). 
