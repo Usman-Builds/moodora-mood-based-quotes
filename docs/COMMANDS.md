@@ -50,7 +50,7 @@ After Step 1 is verified, proceed to implement:
 1. Build the mood selection UI (`src/features/moods/screens/MoodSelectionScreen.tsx`) using `moods` data.
 2. Populate quotes in `src/features/quotes/data/quotes.ts` with multiple quotes per mood.
 3. Build the quotes UI (`src/features/quotes/screens/QuotesScreen.tsx`) and navigate from mood selection with `moodId`.
-4. Integrate `AdBanner` in the Quotes footer (disabled by default; ready for Google Ads later).
+4. Verify the `AdBanner` in the Quotes footer and the interstitial break (both use Google test ads in development).
 5. Validate:
 
 ```bash
@@ -66,6 +66,9 @@ npm run start:reset
 npm run lint:fix
 npm run format
 ```
+
+## Release build / Play upload
+See [BUILD_SIGNED_APK.md](./BUILD_SIGNED_APK.md) and [ADS_GO_LIVE.md](./ADS_GO_LIVE.md).
 
 ## Git
 ```bash

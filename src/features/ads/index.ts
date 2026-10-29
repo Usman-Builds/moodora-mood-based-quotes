@@ -1,3 +1,8 @@
 export { AdBanner } from './components/AdBanner';
-export { adsConfig, getBannerUnitId } from './config/adsConfig';
-export type { AdPlacement, BannerUnitIds } from './types/ad';
+export { useInterstitialBreak } from './hooks/useInterstitialBreak';
+export {
+  adsConfig,
+  getBannerUnitId,
+  getInterstitialUnitId,
+} from './config/adsConfig';
+export type { AdPlacement, BannerUnitIds, InterstitialUnitIds } from './types/ad';

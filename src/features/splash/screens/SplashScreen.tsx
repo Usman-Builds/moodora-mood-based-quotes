@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import {
   Animated,
   Easing,
+  Image,
   StatusBar,
   StyleSheet,
   View,
@@ -13,6 +14,8 @@ import { AppText } from '../../../components/ui/AppText';
 import { theme } from '../../../theme/theme';
 
 const SPLASH_DURATION_MS = 1900;
+
+const logo = require('../../../assets/images/logo/moodora_logo.jpg');
 
 type SplashScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -97,22 +100,14 @@ export function SplashScreen({ navigation }: SplashScreenProps) {
           },
         ]}
       >
-        <Animated.View style={[styles.markRing, { transform: [{ scale: pulse }] }]}>
-          <View style={styles.mark}>
-            <View style={styles.markCore} />
-            <View style={styles.markArcTop} />
-            <View style={styles.markArcBottom} />
+        <Animated.View
+          style={[styles.logoGlow, { transform: [{ scale: pulse }] }]}
+        >
+          <View style={styles.logoFrame}>
+            <Image source={logo} style={styles.logo} resizeMode="cover" />
           </View>
         </Animated.View>
 
-        <AppText
-          variant="display"
-          color={theme.colors.splashText}
-          align="center"
-          style={styles.brand}
-        >
-          NOESIS
-        </AppText>
         <AppText
           variant="label"
           color={theme.colors.splashLilac}
@@ -188,59 +183,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: theme.spacing.xl,
   },
-  markRing: {
-    width: 110,
-    height: 110,
+  logoGlow: {
+    width: 172,
+    height: 172,
     marginBottom: theme.spacing.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 55,
+    borderRadius: 86,
     borderWidth: 1,
     borderColor: 'rgba(155, 123, 255, 0.4)',
     backgroundColor: 'rgba(155, 123, 255, 0.12)',
   },
-  mark: {
-    width: 78,
-    height: 78,
+  logoFrame: {
+    width: 136,
+    height: 136,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 39,
-    backgroundColor: theme.colors.splashSurface,
+    borderRadius: 34,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: theme.colors.splashBorder,
+    backgroundColor: theme.colors.splashSurface,
   },
-  markCore: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: theme.colors.splashLilac,
-  },
-  markArcTop: {
-    position: 'absolute',
-    top: 16,
-    width: 36,
-    height: 18,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-    borderWidth: 3,
-    borderBottomWidth: 0,
-    borderColor: theme.colors.accent,
-    opacity: 0.9,
-  },
-  markArcBottom: {
-    position: 'absolute',
-    bottom: 16,
-    width: 36,
-    height: 18,
-    borderBottomLeftRadius: 18,
-    borderBottomRightRadius: 18,
-    borderWidth: 3,
-    borderTopWidth: 0,
-    borderColor: theme.colors.aurora,
-    opacity: 0.8,
-  },
-  brand: {
-    letterSpacing: 10,
+  logo: {
+    width: '100%',
+    height: '100%',
   },
   tagline: {
     marginTop: theme.spacing.md,

@@ -11,5 +11,8 @@ export const env = {
     showPlaceholdersInDevelopment: false,
     androidBannerUnitId: 'ca-app-pub-3940256099942544/6300978111',
     iosBannerUnitId: 'ca-app-pub-3940256099942544/2934735716',
+    androidInterstitialUnitId: 'ca-app-pub-3940256099942544/1033173712',
+    iosInterstitialUnitId: 'ca-app-pub-3940256099942544/4411468910',
+    interstitialEveryNQuotes: 5,
   },
 } as const;

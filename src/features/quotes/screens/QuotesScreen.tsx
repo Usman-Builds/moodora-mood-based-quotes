@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, Dimensions, Pressable, StatusBar, StyleSheet, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../../app/navigation/types';
@@ -7,7 +7,7 @@ import { Screen } from '../../../components/ui/Screen';
 import { theme } from '../../../theme/theme';
 import { moods } from '../../moods/data/moods';
 import { quotes } from '../data/quotes';
-import { AdBanner } from '../../ads';
+import { AdBanner, adsConfig, useInterstitialBreak } from '../../ads';
 
 type QuotesScreenProps = NativeStackScreenProps<RootStackParamList, 'Quotes'>;
 
@@ -34,15 +34,19 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
   const [index, setIndex] = useState(0);
   const [fadeAnim] = useState(new Animated.Value(1));
   const [scaleAnim] = useState(new Animated.Value(1));
+  const viewsSinceAd = useRef(0);
+  const pendingAdvance = useRef(false);
+  const interstitial = useInterstitialBreak();
+  const { status: interstitialStatus, load: loadInterstitial } = interstitial;
 
   useEffect(() => {
     setIndex(0);
+    viewsSinceAd.current = 0;
   }, [moodId]);
 
   const current = shuffled[index];
 
-  const goNext = () => {
-    if (shuffled.length === 0) return;
+  const advance = useCallback(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 0,
@@ -71,6 +75,32 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
         }),
       ]).start();
     });
+  }, [fadeAnim, scaleAnim, shuffled.length]);
+
+  useEffect(() => {
+    if (interstitialStatus !== 'closed') return;
+    loadInterstitial();
+    if (pendingAdvance.current) {
+      pendingAdvance.current = false;
+      advance();
+    }
+  }, [advance, interstitialStatus, loadInterstitial]);
+
+  const goNext = () => {
+    if (shuffled.length === 0) return;
+
+    viewsSinceAd.current += 1;
+    const every = adsConfig.interstitialEveryNQuotes;
+    const dueForBreak =
+      adsConfig.enabled && every > 0 && viewsSinceAd.current % every === 0;
+
+    if (dueForBreak && interstitial.isLoaded) {
+      pendingAdvance.current = true;
+      interstitial.show();
+      return;
+    }
+
+    advance();
   };
 
   const accent = mood?.accent || theme.colors.accent;

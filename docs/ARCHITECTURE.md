@@ -11,14 +11,15 @@ Moodora is a zero-auth, offline-first React Native CLI app with a clear path to 
 - `src/services/api/` - Typed `fetch` client with timeout/error handling for future backend calls.
 - `src/features/moods/` - Mood metadata (`types`, `data`), public exports.
 - `src/features/quotes/` - Quotes domain (`types`, `data`), repository pattern (`localQuotesRepository`, `remoteQuotesRepository`, `quotesRepository`), public exports.
-- `src/features/ads/` - Ad integration layer (`types`, `config`, `components/AdBanner`) with disabled-by-default placeholders for Google Ads.
+- `src/features/ads/` - AdMob integration: `AdBanner`, `useInterstitialBreak`, config, placement types.
 - `src/features/splash/` - Splash screen animation and navigation gate.
+- `src/assets/images/logo/` - App logo used by the splash screen and generated launcher icons.
 
 ## Navigation Flow
 
-1. `Splash` - Animated intro, auto-navigates to `MoodSelection` via `replace`.
-2. `MoodSelection` - User selects a mood (to be completed in Step 2). `Quotes` route is prepared with `moodId` param.
-3. `Quotes` - Displays quotes for the selected mood (to be completed in Step 2). Footer reserved for ad banner.
+1. `Splash` - Animated logo intro, auto-navigates to `MoodSelection` via `replace`.
+2. `MoodSelection` - User selects a mood. `Quotes` route receives `moodId`.
+3. `Quotes` - Shuffled quotes for the selected mood with a banner footer and an interstitial every 5 quotes.
 
 ## Data Strategy
 
@@ -26,14 +27,13 @@ Moodora is a zero-auth, offline-first React Native CLI app with a clear path to 
 - **Future backend ready**: Flip `env.useRemoteQuotes` to `true` and populate `env.apiBaseUrl` to switch to `remoteQuotesRepository`. The repository interface (`QuotesRepository`) is shared across both implementations.
 - **Type-safe contracts**: `Quote` and `QuotesRepository` define the boundary between UI and data sources.
 
-## Google Ads Integration Support
+## Google Ads Integration
 
 - Configuration lives in `src/config/env.ts` and is surfaced via `src/features/ads/config/adsConfig.ts`.
-- `AdBanner` is a non-blocking placeholder component that:
-  - Renders nothing when ads are disabled.
-  - Optionally shows placeholder metadata in development when enabled.
-  - Exposes `placement` (`quotes-footer`) and a stable test ID for future SDK hookup.
-- Unit IDs use Google's test IDs by default to avoid accidental production traffic.
+- `AdBanner` renders a real `BannerAd` in the quotes footer and disappears when `ads.enabled` is false.
+- `useInterstitialBreak` wraps the SDK hook and preloads an interstitial; `QuotesScreen` shows it every `interstitialEveryNQuotes` quotes, only if loaded.
+- Both formats use Google test IDs in development (`__DEV__`), and test IDs are the defaults in `env.ts`.
+- See [`ADS_INTEGRATION.md`](./ADS_INTEGRATION.md) and [`ADS_GO_LIVE.md`](./ADS_GO_LIVE.md).
 
 ## Production Readiness
 

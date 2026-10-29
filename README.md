@@ -1,73 +1,66 @@
 # Moodora
 
-A simple, offline-first mood-to-quotes app built with React Native CLI. No auth, no backend required for v1. Designed for future backend integration and Google Ads support.
+A dark, atmospheric mood-to-quotes app built with React Native CLI. Pick how you feel and read quotes for that headspace. Offline-first, no auth, no backend.
 
-## Workflow (v1)
+## Workflow
 
-1. User opens the app and sees the splash screen.
-2. App asks how you are feeling and displays a list of moods.
-3. User selects a mood and sees quotes related to that mood.
-4. User can see multiple quotes for one mood.
+1. Animated splash screen.
+2. Choose a mood (happy, calm, hopeful, grateful, sad, anxious, angry, lonely).
+3. Read a shuffled stream of 200 quotes for that mood.
+4. Banner ad in the quotes footer; an interstitial appears every 5 quotes.
 
 ## Quick Start
 
-See [COMMANDS.md](./COMMANDS.md) for Step 1 and Step 2 commands.
-
-### Minimal setup
-
-`ash
+```bash
 npm ci
 npm run verify
 npm start
-`
+```
 
 In another terminal:
-`ash
+
+```bash
 npm run android
-`
+```
 
 ## Documentation
 
-- [Architecture](./docs/ARCHITECTURE.md) - Folder structure, navigation, data strategy, ads hooks
-- [Setup Guide](./docs/SETUP.md) - Prerequisites, installation, running, verification
-- [Features](./docs/FEATURES.md) - v1 requirements and current implementation status
-- [Google Ads Integration](./docs/ADS_INTEGRATION.md) - Future ads hookup guide
-- [Commands](./COMMANDS.md) - Step 1 and Step 2 runnable commands
+- [Getting Started](./docs/HOW_TO_START_APP.md) - Prerequisites and step-by-step startup
+- [Commands](./docs/COMMANDS.md) - Runnable command reference
+- [Architecture](./docs/ARCHITECTURE.md) - Folder structure, navigation, data strategy
+- [Setup Guide](./docs/SETUP.md) - Environment configuration and verification
+- [Features](./docs/FEATURES.md) - Implemented features and status
+- [Ads Integration](./docs/ADS_INTEGRATION.md) - How ads are wired in the app
+- [Going Live with AdMob](./docs/ADS_GO_LIVE.md) - Replace test IDs with your own AdMob account
+- [Building a Signed APK / AAB](./docs/BUILD_SIGNED_APK.md) - Keystore, release build, Play upload
 
 ## Scripts
 
 | Script | Purpose |
 | --- | --- |
-| 
-pm start | Start Metro bundler |
-| 
-pm run android | Build and run on Android |
-| 
-pm run ios | Build and run on iOS |
-| 
-pm run typecheck | TypeScript type checking |
-| 
-pm run lint | ESLint |
-| 
-pm run test -- --runInBand | Run tests |
-| 
-pm run verify | Run typecheck, lint, and tests |
-| 
-pm run bundle:android | Create production bundle for Android |
-| 
-pm run bundle:ios | Create production bundle for iOS |
+| `npm start` | Start Metro bundler |
+| `npm run android` | Build and run on Android |
+| `npm run ios` | Build and run on iOS |
+| `npm run typecheck` | TypeScript type checking |
+| `npm run lint` | ESLint |
+| `npm test -- --runInBand` | Run tests |
+| `npm run verify` | Typecheck, lint, and tests |
+| `npm run bundle:android` | Create production bundle for Android |
+| `npm run bundle:ios` | Create production bundle for iOS |
+| `npm run clean` | Remove build artifacts |
+| `npm run clean:all` | Remove build artifacts and `node_modules` |
 
 ## Tech Stack
 
-- React Native 0.88 (React Native CLI)
-- React 19
-- TypeScript
+- React Native 0.88 (CLI, New Architecture, Hermes)
+- React 19, TypeScript
 - React Navigation (native-stack)
 - React Native Safe Area Context / Screens
+- Google Mobile Ads (`react-native-google-mobile-ads`)
 
 ## Notes
 
-- All code lives in the repo root (\Moodora/\).
-- No authentication or backend is required for v1; data is local/offline-first.
-- Google Ads integration points are prepared but disabled by default.
-- Git repository is initialized.
+- 1600 quotes (200 per mood) loaded from `quotes_bulk.json`; all data is local.
+- The launcher icon and splash logo use `src/assets/images/logo/moodora_logo.jpg`.
+- Ads default to Google test IDs and always use test ads in development.
+- See `AGENTS.md` for repo conventions and gotchas.

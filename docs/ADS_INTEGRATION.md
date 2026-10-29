@@ -1,29 +1,39 @@
-# Google Ads Integration Guide (Future)
+# Ads Integration
 
-Moodora includes non-invasive hooks for Google Mobile Ads without pulling a third-party SDK in Step 1.
+Moodora ships with Google AdMob wired through [`react-native-google-mobile-ads`](https://docs.page/invertase/react-native-google-mobile-ads) v17.
+
+## Placements
+
+| Format | Placement | Where | Trigger |
+| --- | --- | --- | --- |
+| Banner | `quotes-footer` | `src/features/quotes/screens/QuotesScreen.tsx` | Always visible on the quotes screen |
+| Interstitial | `quotes-break` | `src/features/quotes/screens/QuotesScreen.tsx` | Every 5 quotes by default (natural break) |
+
+The interstitial only shows when it is already loaded, so a slow network never blocks the quote flow. After it closes, the next quote advances and a fresh ad is preloaded.
 
 ## Configuration
 
-- `src/config/env.ts` - Toggle `ads.enabled` and provide platform unit IDs. Uses test IDs by default.
-- `src/features/ads/config/adsConfig.ts` - Normalizes config and provides `getBannerUnitId()`.
-- `src/features/ads/components/AdBanner.tsx` - Placeholder component with `placement="quotes-footer"`. Returns `null` when disabled.
+| File | Purpose |
+| --- | --- |
+| `src/config/env.ts` | `ads.enabled`, unit IDs per platform, `interstitialEveryNQuotes` |
+| `src/features/ads/config/adsConfig.ts` | Normalizes config, `getBannerUnitId()`, `getInterstitialUnitId()` |
+| `src/features/ads/components/AdBanner.tsx` | Banner wrapper with themed frame |
+| `src/features/ads/hooks/useInterstitialBreak.ts` | Interstitial lifecycle wrapper |
+| `android/app/src/main/AndroidManifest.xml` | AdMob **application ID** meta-data |
+| `ios/Moodora/Info.plist` | AdMob **application ID** (`GADApplicationIdentifier`) |
 
-## Recommended SDK
+## Development behavior
 
-- [Google Mobile Ads SDK for React Native](https://developers.google.com/admob/react-native/start) (commonly `react-native-google-mobile-ads`).
-- Follow Google AdMob policies and your app's consent requirements (GDPR/ATT) as applicable.
+- Both unit IDs default to Google's **test** IDs.
+- `AdBanner` and `useInterstitialBreak` force `TestIds.BANNER` / `TestIds.INTERSTITIAL` whenever `__DEV__` is true, so a debug build always shows a "Test Ad" and never bills your account.
+- Release builds (`__DEV__ === false`) use the IDs from `src/config/env.ts`.
 
-## Integration Steps (when ready)
+## Going live
 
-1. Install the SDK: `npm install react-native-google-mobile-ads`.
-2. Complete native setup per the SDK docs (Android `AndroidManifest.xml`, iOS `Info.plist`).
-3. Replace the placeholder in `AdBanner` with the real `BannerAd` component, passing `unitId={getBannerUnitId()}` and `size`.
-4. Set `ads.enabled = true` in `env.ts` only after testing with test IDs.
-5. Consider loading strategies, error handling, and collapsing the banner when it fails to load.
-6. Verify with test ads before using production unit IDs.
+Follow [`ADS_GO_LIVE.md`](./ADS_GO_LIVE.md) for the full checklist: creating the AdMob app, replacing the application and unit IDs, iOS setup, testing, and policy requirements.
 
 ## Notes
 
-- Keep `useRemoteQuotes` and ads decoupled. Both can be enabled independently.
-- The `quotes-footer` placement is reserved so UI doesn't need restructuring when ads are added.
-- In development, you can set `showPlaceholdersInDevelopment` to visualize banner space.
+- Requests use `requestNonPersonalizedAdsOnly: true`. Add a consent flow (Google UMP) before enabling personalized ads.
+- Keep ads away from tappable controls; the banner sits below the "Next" button with padding.
+- Do not tap your own live ads. Use AdMob test devices during development.

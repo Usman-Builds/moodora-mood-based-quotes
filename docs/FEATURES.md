@@ -1,29 +1,28 @@
 # Features
 
-## v1 Workflow (as implemented/planned)
+## v1 Workflow
 
-1. **Splash** - User opens the app and sees the animated splash screen.
-2. **Mood selection** - App asks how the user is feeling and displays a list of moods (Step 2).
-3. **Quotes** - User selects a mood and navigates to quotes related to that mood (Step 2).
-4. **Multiple quotes per mood** - The quote list supports multiple quotes per mood (Step 2).
+1. **Splash** - Animated logo intro, then automatic navigation.
+2. **Mood selection** - 2-column grid of 8 moods with accent colors and glyph icons.
+3. **Quotes** - Shuffled single-card stream for the selected mood (200 quotes each).
+4. **Ads** - Footer banner plus an interstitial every 5 quotes.
 
-## Current State (Step 1)
+## Implemented
 
-- [x] React Native CLI project initialized in the root folder with app name `Moodora`.
-- [x] Production-ready folder structure with feature modules.
-- [x] Navigation scaffold (`Splash` -> `MoodSelection` -> `Quotes` with `moodId`).
-- [x] Theme system, UI primitives, and screen shell.
-- [x] Offline-first quotes repository pattern with future backend support.
-- [x] Google Ads integration points (`AdBanner`, `adsConfig`, placement reserved for `quotes-footer`).
+- [x] React Native CLI project with app name `Moodora` (`com.moodora.app`).
+- [x] Feature-based folder structure with shared UI primitives and theme.
+- [x] Navigation (`Splash` -> `MoodSelection` -> `Quotes` with `moodId`).
+- [x] Dark "Noesis" visual theme with glow accents and animated splash.
+- [x] 1600 quotes (200 per mood) loaded offline from `quotes_bulk.json`.
+- [x] Google AdMob: banner in the quotes footer and a preloaded interstitial on natural breaks.
+- [x] Generated launcher icons (adaptive + legacy + round) and iOS AppIcon from the brand logo.
 - [x] TypeScript, ESLint, Jest configured and passing.
-- [x] Git repository with initial commit.
-- [x] Documentation and runnable commands prepared.
+- [x] Release signing support via `android/keystore.properties`.
+- [x] Documentation for setup, ads go-live, and signed builds.
 
-## Future (Step 2 scope)
+## Next / Ideas
 
-- Implement full mood selection UI with the `moods` dataset.
-- Implement quotes list/carousel with `quotesRepository` and multiple quotes per mood.
-- Add navigation between MoodSelection and Quotes.
-- Reserve and wire `AdBanner` in the Quotes screen footer.
-- Populate `src/features/quotes/data/quotes.ts` with curated quotes.
-- Keep all data local by default (no auth/backend required).
+- Favorites and share actions.
+- Daily quote notification.
+- Backend sync by flipping `env.useRemoteQuotes`.
+- Consent flow (Google UMP) for personalized ads in EEA/UK.

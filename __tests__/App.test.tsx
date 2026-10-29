@@ -12,7 +12,15 @@ jest.mock('react-native-google-mobile-ads', () => ({
   }),
   BannerAd: () => null,
   BannerAdSize: { BANNER: 'BANNER' },
-  TestIds: { BANNER: 'ca-app-pub-3940256099942544/6300978111' },
+  TestIds: {
+    BANNER: 'ca-app-pub-3940256099942544/6300978111',
+    INTERSTITIAL: 'ca-app-pub-3940256099942544/1033173712',
+  },
+  useInterstitialAd: () => ({
+    status: 'idle',
+    show: jest.fn(),
+    load: jest.fn(),
+  }),
 }));
 
 import App from '../App';

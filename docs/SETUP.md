@@ -22,9 +22,10 @@ npm install
 
 ## Environment Configuration
 
-- Edit `src/config/env.ts` to point to a future backend or toggle ads.
-- `ads.enabled` is `false` by default. Enable only when integrating a Google Mobile Ads SDK.
-- Keep test ad unit IDs unless you have production unit IDs configured per platform policy.
+- Edit `src/config/env.ts` to point to a future backend, toggle ads, or change the interstitial cadence.
+- `ads.enabled` is `true`; ad unit IDs are Google's test IDs until you replace them.
+- Debug builds always force Google test ads; see [`ADS_GO_LIVE.md`](./ADS_GO_LIVE.md) before shipping.
+- Release signing is configured through `android/keystore.properties`; see [`BUILD_SIGNED_APK.md`](./BUILD_SIGNED_APK.md).
 
 ## Running the App
 
