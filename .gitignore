@@ -71,6 +71,9 @@ yarn-error.log
 # Build verification output
 /.build
 
+# Local test APKs
+/test_apk/
+
 # Local environment files
 .env
 .env.*
