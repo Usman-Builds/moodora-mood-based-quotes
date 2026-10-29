@@ -70,6 +70,14 @@ npm run format
 ## Release build / Play upload
 See [BUILD_SIGNED_APK.md](./BUILD_SIGNED_APK.md) and [ADS_GO_LIVE.md](./ADS_GO_LIVE.md).
 
+## History log maintenance
+The session log (`../history/HISTORY.md`) compacts itself on every commit via `.githooks/pre-commit`.
+```bash
+npm run history:compact            # compact now
+npm run history:compact -- --dry-run  # preview only
+npm run prepare                    # (re)install the git hook
+```
+
 ## Git
 ```bash
 git status

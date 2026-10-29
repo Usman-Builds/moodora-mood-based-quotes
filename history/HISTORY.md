@@ -24,9 +24,11 @@ a stale, bloated second README.
 5. **No duplication.** How-to lives in `docs/`, rules live in `AGENTS.md`, current state lives here.
    Link instead of restating.
 6. **Commit it with the work.** A log that only exists locally is invisible to the next session.
-7. **Rotation:** when the session log exceeds ~15 entries or this file passes ~250 lines, move all but
-   the newest 2 entries into `history/archive/YYYY-MM.md` (append, do not overwrite) and keep only a
-   one-line pointer to the archive here. Archive files are plain Markdown and are never edited again.
+7. **Size is enforced automatically.** `scripts/history-compact.js` archives all but the newest 2
+   entries into `history/archive/YYYY-MM.md` once the log passes 12 entries / 250 lines / 48 KB, and
+   gzips old archives when `history/` passes 200 KB. This runs on every commit via the tracked
+   `.githooks/pre-commit` hook (installed by `npm run prepare`; manual run: `npm run history:compact`).
+   Check it with `npm run history:compact -- --dry-run`. Do not hand-edit archives: they are immutable.
 8. **Don't fix history.** If an earlier entry is wrong, correct the current status sections and note
    the correction in the new entry; leave old entries as written.
 
@@ -174,3 +176,12 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
   backup risk recorded in section 6; AGENTS.md now requires reading/updating this file.
 - Verified: file renders, paths match the repo, `git status` shows only `history/` + `AGENTS.md`.
 - Open: user must back up `android/app/moodora-release.keystore` + password.
+
+### 2026-10-29 — automatic history compaction
+- Goal: cap the size of `history/` without manual housekeeping.
+- Changed: `scripts/history-compact.js` (archive after 12 entries / 250 lines / 48 KB, gzip archives
+  past 200 KB), `scripts/install-git-hooks.js`, `.githooks/pre-commit`, `history:compact` + `prepare`
+  npm scripts, tests, `docs/COMMANDS.md`, `AGENTS.md`.
+- Verified: 3 new Jest tests pass; `--dry-run` reports nothing to compact; hook installed
+  (`core.hooksPath=.githooks`).
+- Open: none.

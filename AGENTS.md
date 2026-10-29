@@ -5,8 +5,8 @@
 - Update it at the end of every session: append a dated entry under "Session log" and refresh the
   status/known-issues/next-steps sections so the next session can continue from it.
 - Follow its maintenance rules: keep entries short, never write secrets (paths only), do not duplicate
-  `docs/` content, commit the update with the work, and rotate old entries into `history/archive/`
-  per the policy in that file.
+  `docs/` content, and commit the update with the work. Old entries are archived automatically by the
+  pre-commit hook (`scripts/history-compact.js`); run `npm run history:compact` if hooks are not installed.
 - Treat it as the source of truth for current state (feature status, signing, test APK, open issues);
   verify important claims against the code and `git log`.
 

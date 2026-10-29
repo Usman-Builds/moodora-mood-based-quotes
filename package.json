@@ -20,7 +20,9 @@
     "bundle:android": "node scripts/bundle.js android",
     "bundle:ios": "node scripts/bundle.js ios",
     "clean": "node scripts/clean.js",
-    "clean:all": "node scripts/clean.js --all"
+    "clean:all": "node scripts/clean.js --all",
+    "history:compact": "node scripts/history-compact.js",
+    "prepare": "node scripts/install-git-hooks.js"
   },
   "dependencies": {
     "@react-navigation/native": "7.5.1",
