@@ -132,12 +132,14 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
 
 ## 9. Known issues / caveats
 
-- All ads still use Google **test** IDs; replace before Play upload (`docs/ADS_GO_LIVE.md`).
+- Android uses production AdMob IDs; emulators still get "Test Ad" creatives (AdMob treats them as test devices).
+- Splash tagline typo "BREATH. REFLECT. RESET." (should be BREATHE); mood screen header says "NOESIS" not Moodora.
+- No in-app privacy policy link yet (Play requires one): https://usman-builds.github.io/moodora-privacy-policy/
 - Native SIGILL in Google WebView `onTrimMemory` when the app is backgrounded (reproduced 100% on the
   Android 17 preview emulator `android-37.1 ps16k`, pre-release WebView 149.0.7827.5; also without opening
   Quotes). Originates in the AdMob SDK's WebView, not app code. Unconfirmed on stable devices — check on a
   real phone / stable emulator image and in Play Console vitals.
-- `versionCode`/`versionName` never bumped; bump before any Play upload.
+- `versionCode 1` / `1.0` was uploaded to Play internal testing; next upload must bump `versionCode`.
 - iOS side unverified (icons, Info.plist, pods).
 - Root README/AGENTS links point into `docs/`.
 - `test_apk/` is intentionally untracked/ignored; the APK is shared manually (cloud/USB), not via GitHub.
@@ -147,7 +149,7 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
 
 - **Back up the release keystore + password** (see section 6) — do this before anything else.
 - Test real Android ads on a release build on a physical device; add iOS AdMob app/unit IDs when ready.
-- Bump version, build AAB (`.\gradlew.bat bundleRelease`), create Play Console listing.
+- Version 2: in-app privacy policy link, fix splash typo + NOESIS header, bump versionCode, rebuild AAB.
 - Verify iOS build on macOS.
 - Optional: settings screen, favorites/history, share quote, daily quote notification.
 - When this log grows: follow the rotation policy at the top of this file.
@@ -225,3 +227,10 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
   `values-v31/styles.xml` sets the Android 12+ system splash background; iOS `LaunchScreen.storyboard` dark with light text.
 - Verified: `npm run verify`; debug build on emulator screenshots (dark launch, no counter).
 
+### 2026-11-04 — Play Console listing + store assets
+- Built signed `app-release.aab` (versionCode 1) for Play internal testing; walked through Play Console forms
+  (app access: none restricted, ads: yes, IARC: all No, target age 13+, data safety: AdMob data types).
+- Privacy policy published via GitHub Pages from separate repo `Usman-Builds/moodora-privacy-policy`.
+- Added `store-assets/`: 512 icon, 1024x500 feature graphic, 5 framed 1080x1920 phone screenshots (from real
+  release-build captures in `store-assets/raw/`; emulator test-ad banner replaced with the empty ad slot), description.
+- Open: in-app privacy link, splash typo, NOESIS header (see Known issues).
