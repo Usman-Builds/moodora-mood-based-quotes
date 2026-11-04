@@ -36,7 +36,7 @@
 
 ## Gotchas / quirks
 - Windows env: no JDK/ANDROID_HOME/SDK/adb/emulator/iOS toolchain guaranteed; native builds/smoke tests may not run here.
-- AdMob: SDK `react-native-google-mobile-ads` 17.x. Both platforms need the AdMob **application ID** or the app crashes at launch: Android `com.google.android.gms.ads.APPLICATION_ID` meta-data in `android/app/src/main/AndroidManifest.xml` (also needs `xmlns:tools` + `tools:replace="android:value"` because the library declares an empty value), iOS `GADApplicationIdentifier` in `ios/Moodora/Info.plist`. Sample test IDs are currently used.
+- AdMob: SDK `react-native-google-mobile-ads` 17.x. Both platforms need the AdMob **application ID** or the app crashes at launch. Set it in `app.json` under `"react-native-google-mobile-ads"` (`android_app_id`, `ios_app_id`); the library injects it into the Android manifest at build time (do not hard-code it in `AndroidManifest.xml`). Android uses the production ID; iOS still uses the sample ID, and `ios/Moodora/Info.plist` `GADApplicationIdentifier` should match `ios_app_id`.
 - Ads: `src/config/env.ts` uses Google test unit IDs; `AdBanner` and `useInterstitialBreak` force test IDs when `__DEV__`, so dev always shows "Test Ad".
 - Release signing: `android/app/build.gradle` reads `android/keystore.properties` (gitignored) and signs `release` with it; falls back to the debug key when absent. See `docs/BUILD_SIGNED_APK.md`.
 - First Metro bundle after `start:reset` can take ~90s; a white screen during that time is not a crash.

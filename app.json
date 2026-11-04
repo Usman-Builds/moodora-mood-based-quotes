@@ -1,4 +1,8 @@
 {
   "name": "Moodora",
-  "displayName": "Moodora"
+  "displayName": "Moodora",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-6756076643824130~6346557041",
+    "ios_app_id": "ca-app-pub-3940256099942544~1458002511"
+  }
 }

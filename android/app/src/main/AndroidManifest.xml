@@ -13,12 +13,8 @@
       android:usesCleartextTraffic="${usesCleartextTraffic}"
       android:supportsRtl="true">
 
-      <!-- Moodora production AdMob App ID (Android).
-           Debug builds still show test ads (forced via TestIds when __DEV__). -->
-      <meta-data
-        android:name="com.google.android.gms.ads.APPLICATION_ID"
-        android:value="ca-app-pub-6756076643824130~6346557041"
-        tools:replace="android:value"/>
+      <!-- AdMob App ID is injected by react-native-google-mobile-ads from app.json
+           ("react-native-google-mobile-ads".android_app_id). Set it there, not here. -->
       <!-- Move AdMob SDK initialization and ad loading off the main thread to avoid ANRs. -->
       <meta-data
         android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"

@@ -74,7 +74,7 @@ shuffled, single card with fade/scale animation, "Next" button, banner ad, inter
   advances to the next quote after close, re-loads after `closed`, never retries on error.
 - Android manifest has AdMob application ID with `xmlns:tools` + `tools:replace="android:value"`
   (missing it crashed the app on launch — fixed in `5b16ae2`).
-- Android: real app ID in the manifest, plus real banner and interstitial unit IDs in `env.ts` (release builds only;
+- Android: real app ID in `app.json` (`react-native-google-mobile-ads.android_app_id`, injected into the manifest), plus real banner and interstitial unit IDs in `env.ts` (release builds only;
   `__DEV__` still forces test ads).
 - iOS `Info.plist` has `GADApplicationIdentifier` (sample test ID); iOS unit IDs are still samples.
 - Go-live instructions: `docs/ADS_GO_LIVE.md`.
@@ -212,4 +212,10 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
 - Verified: `npm run verify` (8 tests, 4 new); release x86_64 build on emulator: process-death restore, don't-keep-
   activities, 3000-event monkey, rapid Next taps through interstitial (resumes at 6/200) — no crashes.
 - Open: WebView `onTrimMemory` SIGILL on preview emulator (see Known issues); rebuild `test_apk/` APK.
+
+### 2026-11-04 — AdMob app ID moved to app.json; npm run android fix
+- `npm run android` failed with INSTALL_FAILED_UPDATE_INCOMPATIBLE: a release-signed APK was on the emulator.
+  Fix: `adb uninstall com.moodora.app` before switching signing.
+- Gradle warning "requires an 'android_app_id' ... in app.json": moved AdMob app IDs to `app.json` and removed the
+  hard-coded manifest meta-data. Verified: warning gone, merged manifest has the production ID, app launches.
 
