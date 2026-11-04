@@ -175,9 +175,6 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
             <AppText variant="title" style={styles.headerTitle}>
               {mood ? mood.label : 'Quotes'}
             </AppText>
-            <AppText variant="label" color={theme.colors.inkSubtle}>
-              {shuffled.length > 0 ? `${index + 1} / ${shuffled.length}` : '0'}
-            </AppText>
           </View>
           <AppText variant="label" color={accent} style={styles.moodTag}>
             {mood ? mood.description.toUpperCase() : 'HEADSPACE'}

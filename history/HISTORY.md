@@ -219,3 +219,9 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
 - Gradle warning "requires an 'android_app_id' ... in app.json": moved AdMob app IDs to `app.json` and removed the
   hard-coded manifest meta-data. Verified: warning gone, merged manifest has the production ID, app launches.
 
+### 2026-11-04 — dark launch screen, no quote counter
+- Removed the `n / 200` counter from the Quotes header.
+- White launch flash fixed: `AppTheme` is now dark `Theme.AppCompat.NoActionBar` with `windowBackground` `#0B1026`;
+  `values-v31/styles.xml` sets the Android 12+ system splash background; iOS `LaunchScreen.storyboard` dark with light text.
+- Verified: `npm run verify`; debug build on emulator screenshots (dark launch, no counter).
+
