@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { ErrorBoundary } from '../../../components/ErrorBoundary';
 import { useTheme } from '../../../theme/ThemeProvider';
 import { adsConfig, getBannerUnitId } from '../config/adsConfig';
 import type { AdPlacement } from '../types/ad';
@@ -10,10 +11,23 @@ type AdBannerProps = {
   style?: StyleProp<ViewStyle>;
 };
 
-export function AdBanner({ placement, style }: AdBannerProps) {
-  const theme = useTheme();
-
+/** Ads are optional: any failure here hides the banner instead of breaking the screen. */
+export function AdBanner(props: AdBannerProps) {
   if (!adsConfig.enabled) {
+    return null;
+  }
+  return (
+    <ErrorBoundary name="ad-banner" fallback={null}>
+      <AdBannerInner {...props} />
+    </ErrorBoundary>
+  );
+}
+
+function AdBannerInner({ placement, style }: AdBannerProps) {
+  const theme = useTheme();
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
     return null;
   }
 
@@ -39,6 +53,7 @@ export function AdBanner({ placement, style }: AdBannerProps) {
         requestOptions={{
           requestNonPersonalizedAdsOnly: true,
         }}
+        onAdFailedToLoad={() => setFailed(true)}
       />
     </View>
   );

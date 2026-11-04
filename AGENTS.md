@@ -42,6 +42,8 @@
 - First Metro bundle after `start:reset` can take ~90s; a white screen during that time is not a crash.
 - TS: large quote arrays caused `TS2590` before; keep quotes in JSON (`quotes_bulk.json`) not massive inline literals.
 - Jest: `jest.config.js` has `transformIgnorePatterns` for RN/Nav; tests use `@react-native/jest-preset`.
+- `MainActivity.onCreate` must set `RNScreensFragmentFactory` before `super.onCreate`; removing it brings back the crash on return after process death.
+- Crash safety: root `ErrorBoundary` + `globalErrorHandler` (release only) show a recovery screen instead of crashing; wrap optional UI (ads) in `ErrorBoundary fallback={null}`.
 - StatusBar: use `barStyle` only (no backgroundColor mixing issues in places). 
 - No emojis; prefer filled icons consistent with dark brand.
 

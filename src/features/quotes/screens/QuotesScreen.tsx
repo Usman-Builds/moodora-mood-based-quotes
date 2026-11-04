@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Animated, Dimensions, Pressable, StatusBar, StyleSheet, View } from 'react-native';
+import {
+  Animated,
+  AppState,
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../../app/navigation/types';
 import { AppText } from '../../../components/ui/AppText';
@@ -20,14 +28,16 @@ function shuffle<T>(arr: readonly T[]): T[] {
   return copy;
 }
 
-const { width } = Dimensions.get('window');
+// If an interstitial is requested but never opens, continue anyway after this long.
+const AD_OPEN_TIMEOUT_MS = 4000;
 
 export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
-  const { moodId } = route.params;
+  const moodId = route.params?.moodId;
+  const { width } = useWindowDimensions();
   const mood = useMemo(() => moods.find((m) => m.id === moodId), [moodId]);
 
   const shuffled = useMemo(
-    () => shuffle(quotes.filter((q) => q.moodId === moodId)),
+    () => (moodId ? shuffle(quotes.filter((q) => q.moodId === moodId)) : []),
     [moodId],
   );
 
@@ -36,17 +46,36 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
   const [scaleAnim] = useState(new Animated.Value(1));
   const viewsSinceAd = useRef(0);
   const pendingAdvance = useRef(false);
+  const isAnimating = useRef(false);
+  const isMounted = useRef(true);
+  const adOpenTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const interstitial = useInterstitialBreak();
   const { status: interstitialStatus, load: loadInterstitial } = interstitial;
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+      fadeAnim.stopAnimation();
+      scaleAnim.stopAnimation();
+      if (adOpenTimer.current) {
+        clearTimeout(adOpenTimer.current);
+      }
+    };
+  }, [fadeAnim, scaleAnim]);
 
   useEffect(() => {
     setIndex(0);
     viewsSinceAd.current = 0;
   }, [moodId]);
 
-  const current = shuffled[index];
+  const current = shuffled.length > 0 ? shuffled[index % shuffled.length] : undefined;
 
   const advance = useCallback(() => {
+    if (!isMounted.current || shuffled.length === 0 || isAnimating.current) {
+      return;
+    }
+    isAnimating.current = true;
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 0,
@@ -59,6 +88,10 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
         useNativeDriver: true,
       }),
     ]).start(() => {
+      if (!isMounted.current) {
+        isAnimating.current = false;
+        return;
+      }
       setIndex((prev) => (prev + 1) % shuffled.length);
       fadeAnim.setValue(0);
       scaleAnim.setValue(1.02);
@@ -73,29 +106,51 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
           duration: 200,
           useNativeDriver: true,
         }),
-      ]).start();
+      ]).start(() => {
+        isAnimating.current = false;
+      });
     });
   }, [fadeAnim, scaleAnim, shuffled.length]);
 
-  useEffect(() => {
-    if (interstitialStatus !== 'closed') return;
-    loadInterstitial();
+  const resumeAfterAd = useCallback(() => {
+    if (adOpenTimer.current) {
+      clearTimeout(adOpenTimer.current);
+      adOpenTimer.current = null;
+    }
     if (pendingAdvance.current) {
       pendingAdvance.current = false;
       advance();
     }
-  }, [advance, interstitialStatus, loadInterstitial]);
+  }, [advance]);
+
+  useEffect(() => {
+    if (interstitialStatus === 'showing' && adOpenTimer.current) {
+      clearTimeout(adOpenTimer.current);
+      adOpenTimer.current = null;
+      return;
+    }
+    if (interstitialStatus === 'closed') {
+      loadInterstitial();
+      resumeAfterAd();
+      return;
+    }
+    if (interstitialStatus === 'error' || interstitialStatus === 'no-fill') {
+      // The ad failed (possibly mid-show): never leave the user stuck on a quote.
+      resumeAfterAd();
+    }
+  }, [interstitialStatus, loadInterstitial, resumeAfterAd]);
 
   const goNext = () => {
-    if (shuffled.length === 0) return;
+    if (shuffled.length === 0 || isAnimating.current || pendingAdvance.current) return;
 
     viewsSinceAd.current += 1;
     const every = adsConfig.interstitialEveryNQuotes;
     const dueForBreak =
       adsConfig.enabled && every > 0 && viewsSinceAd.current % every === 0;
 
-    if (dueForBreak && interstitial.isLoaded) {
+    if (dueForBreak && interstitial.isLoaded && AppState.currentState === 'active') {
       pendingAdvance.current = true;
+      adOpenTimer.current = setTimeout(resumeAfterAd, AD_OPEN_TIMEOUT_MS);
       interstitial.show();
       return;
     }
@@ -118,7 +173,7 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
           <View style={styles.headerRow}>
             <View style={[styles.dot, { backgroundColor: accent }]} />
             <AppText variant="title" style={styles.headerTitle}>
-              {mood ? mood.label : moodId}
+              {mood ? mood.label : 'Quotes'}
             </AppText>
             <AppText variant="label" color={theme.colors.inkSubtle}>
               {shuffled.length > 0 ? `${index + 1} / ${shuffled.length}` : '0'}
@@ -135,6 +190,7 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
               style={[
                 styles.quoteCard,
                 {
+                  width: width - theme.spacing.lg * 2,
                   opacity: fadeAnim,
                   transform: [{ scale: scaleAnim }],
                   borderColor: accent,
@@ -153,7 +209,11 @@ export function QuotesScreen({ route, navigation }: QuotesScreenProps) {
               </AppText>
             </Animated.View>
           ) : (
-            <View style={[styles.quoteCard, { borderColor: accent }]}>
+            <View
+              style={[
+                styles.quoteCard,
+                { width: width - theme.spacing.lg * 2, borderColor: accent },
+              ]}>
               <AppText variant="body" color={theme.colors.inkMuted}>
                 No quotes available for this mood yet.
               </AppText>
@@ -218,7 +278,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
   },
   quoteCard: {
-    width: width - theme.spacing.lg * 2,
     backgroundColor: theme.colors.surface,
     borderWidth: 1,
     borderRadius: 22,

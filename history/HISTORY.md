@@ -7,7 +7,7 @@ when you finish a task. Keep it current — it is the handoff between sessions.
 
 - Repo: `https://github.com/Usman-Builds/moodora-mood-based-quotes`
 - Branch: `main`
-- Last updated: 2026-10-29
+- Last updated: 2026-11-04
 
 ## How to maintain this file
 
@@ -63,7 +63,7 @@ shuffled, single card with fade/scale animation, "Next" button, banner ad, inter
 - Android: minSdk 24, compileSdk 37, targetSdk 36, buildTools 37.0.0, Kotlin 2.2.0
 - `versionCode 1`, `versionName "1.0"` (`android/app/build.gradle`)
 
-## 3. Ads (implemented, still Google TEST ids)
+## 3. Ads (Android uses real AdMob IDs; iOS still Google TEST ids)
 
 - Config: `src/config/env.ts` — `ads.enabled`, `useRemoteQuotes`, `apiBaseUrl`,
   banner + interstitial unit IDs, `interstitialEveryNQuotes: 5`.
@@ -74,7 +74,9 @@ shuffled, single card with fade/scale animation, "Next" button, banner ad, inter
   advances to the next quote after close, re-loads after `closed`, never retries on error.
 - Android manifest has AdMob application ID with `xmlns:tools` + `tools:replace="android:value"`
   (missing it crashed the app on launch — fixed in `5b16ae2`).
-- iOS `Info.plist` has `GADApplicationIdentifier` (sample test ID).
+- Android: real app ID in the manifest, plus real banner and interstitial unit IDs in `env.ts` (release builds only;
+  `__DEV__` still forces test ads).
+- iOS `Info.plist` has `GADApplicationIdentifier` (sample test ID); iOS unit IDs are still samples.
 - Go-live instructions: `docs/ADS_GO_LIVE.md`.
 
 ## 4. Branding / icons
@@ -131,6 +133,10 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
 ## 9. Known issues / caveats
 
 - All ads still use Google **test** IDs; replace before Play upload (`docs/ADS_GO_LIVE.md`).
+- Native SIGILL in Google WebView `onTrimMemory` when the app is backgrounded (reproduced 100% on the
+  Android 17 preview emulator `android-37.1 ps16k`, pre-release WebView 149.0.7827.5; also without opening
+  Quotes). Originates in the AdMob SDK's WebView, not app code. Unconfirmed on stable devices — check on a
+  real phone / stable emulator image and in Play Console vitals.
 - `versionCode`/`versionName` never bumped; bump before any Play upload.
 - iOS side unverified (icons, Info.plist, pods).
 - Root README/AGENTS links point into `docs/`.
@@ -140,7 +146,7 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
 ## 10. Next steps (ideas)
 
 - **Back up the release keystore + password** (see section 6) — do this before anything else.
-- Swap in real AdMob app/unit IDs and test on a physical device.
+- Test real Android ads on a release build on a physical device; add iOS AdMob app/unit IDs when ready.
 - Bump version, build AAB (`.\gradlew.bat bundleRelease`), create Play Console listing.
 - Verify iOS build on macOS.
 - Optional: settings screen, favorites/history, share quote, daily quote notification.
@@ -185,3 +191,25 @@ All documentation lives in `docs/`; only `README.md` and `AGENTS.md` stay at the
 - Verified: 3 new Jest tests pass; `--dry-run` reports nothing to compact; hook installed
   (`core.hooksPath=.githooks`).
 - Open: none.
+
+### 2026-11-04 — real Android AdMob IDs
+- Goal: replace the Android sample AdMob IDs with production ones.
+- Changed: `AndroidManifest.xml` app ID, `src/config/env.ts` Android banner + interstitial unit IDs.
+  iOS IDs unchanged (still samples).
+- Verified: `npm run verify` passes. Not yet tested on device.
+- Open: confirm real ads serve in a release APK; iOS IDs pending.
+
+### 2026-11-04 — crash hardening
+- Goal: fix intermittent crashes in the release APK.
+- Root cause found + fixed: returning to the app after Android killed it in the background crashed with
+  "Screen fragments should never be restored" (react-native-screens). Fix: `RNScreensFragmentFactory` in
+  `MainActivity.onCreate`. Reproduced before (`am kill` while on Quotes), 0 crashes after (4 runs).
+- Hardening: root `ErrorBoundary` + recovery screen (`src/components/ErrorBoundary.tsx`), release-only global JS
+  error handler (`src/app/errors/globalErrorHandler.ts`), ad banner isolated in its own boundary and hidden on
+  load failure, QuotesScreen (param guards, animation lock, unmount-safe animations, interstitial resume on
+  error/no-fill + 4s open timeout, AppState check), quotes JSON validated at load, AdMob
+  `OPTIMIZE_INITIALIZATION`/`OPTIMIZE_AD_LOADING` manifest flags.
+- Verified: `npm run verify` (8 tests, 4 new); release x86_64 build on emulator: process-death restore, don't-keep-
+  activities, 3000-event monkey, rapid Next taps through interstitial (resumes at 6/200) — no crashes.
+- Open: WebView `onTrimMemory` SIGILL on preview emulator (see Known issues); rebuild `test_apk/` APK.
+
